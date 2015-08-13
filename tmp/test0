@@ -1,0 +1,55 @@
+#!/bin/sh
+# author: xycoder
+# date: 2015-07-06
+ver="0.1"
+help()
+{
+ cat << HELP
+update_ueinfo -- update the ue id for all servers
+USAGE: update_ueinfo [-h] filename
+OPTION: -h help text
+EXAMPLE: update_ueinfo run_ue.sh
+This will update the run_ue.sh in every servers
+version $ver
+HELP
+ exit 0
+}
+
+error()
+{
+ echo "$1"
+ exit 1
+}
+
+while [ -n "$1" ];
+do
+ case $1 in
+  -h) help;shift 1;;
+  --) break;;
+  -*) echo "error: no such option $1. -h for help"; exit 1;;
+  *) break;;
+ esac
+done
+
+#input check:
+if [ -z "$1" ];then
+ error "ERROR: you must specify a file, use -h for help"
+fi
+
+for i in `awk '{print $1}' ue_service_ip`
+do
+ ueid=`awk -v I="$i" '{if(I==$1)print $2}' ue_service_ip`
+ Istat=`awk -v I="$i" '{if(I==$1)print $3}' ue_service_ip`
+# echo $ueid
+ if [ $Istat == 1 ]; then
+   #echo "$ueid"
+   sed '2c \
+   ue_id='$ueid'
+   ' ./resource/run_ue.sh > ./resource/run_ue.tmp
+   mv resource/run_ue.tmp resource/"$1"
+   cat resource/"$1"
+#   scp resource/"$1" root@"$i":/home/CASE1/UE3.0_Test_v2/Bin/
+ fi
+done
+#rm resource/run_ue.tmp
+#rm resource/"$1"

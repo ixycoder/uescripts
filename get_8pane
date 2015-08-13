@@ -1,0 +1,15 @@
+#!/bin/sh
+
+tmux split-window -v
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 2
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 6
+tmux split-window -h

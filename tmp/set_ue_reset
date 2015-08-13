@@ -1,0 +1,69 @@
+#!/bin/sh
+if [ -n "$1" ]; then
+ mysession="$1"
+else
+ mysession='mytmux_0'
+fi
+#echo $mysession
+#exit
+tmux new-session -d -s $mysession
+
+tmux renam-window -t $mysession:0 'screen0'
+
+# get 8-pane in a window
+tmux new-window -t $mysession:1 -n 'screen1'
+tmux split-window -v
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 2
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 6
+tmux split-window -h
+
+tmux new-window -t $mysession:2 -n 'screen2';
+tmux split-window -v; 
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 0
+tmux split-window -h
+tmux select-pane -t 2
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 4
+tmux split-window -h
+tmux select-pane -t 6
+tmux split-window -h
+
+
+#tmux new-window -t mytmux:3 -n 'mantmux' 'man tmux'
+
+
+tmux select-window -t mysession:1
+inum=0
+jnum=1
+for i in `awk '{print $1}' ue_service_ip`
+do
+ ueid=`awk -v I="$i" '{if(I==$1)print $2}' ue_service_ip`
+ Istat=`awk -v I="$i" '{if(I==$1)print $3}' ue_service_ip`
+ if [ $Istat == 1 ]; then
+   tmux send-keys -t $mysession:"$jnum"."$inum" "ssh root@$i" ENTER
+   expect -c 'expect "#"'
+   tmux send-keys -t $mysession:"$jnum"."$inum" "cd /home/" ENTER
+   expect -c 'expect "#"'
+   #tmux send-keys -t mytmux:1."$inum" "./rue.exp" ENTER
+   $inum=$inum+1
+   if [ $inum == 8 ]; then
+    $inum=0
+    $jnum=$jnum+1
+   fi
+ fi
+done
+
+tmux  attach-session -t $mysession

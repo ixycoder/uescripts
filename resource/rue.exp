@@ -1,0 +1,13 @@
+#!/usr/bin/expect -f
+set timeout 300
+
+spawn sh zue_init.sh
+expect "ue:/#"
+send "reset -card=0 0\r"
+expect "ue:/#"
+send "init\r"
+expect "ue:/#"
+send "q\r"
+expect "*home #"
+spawn sh zue_run.sh
+interact

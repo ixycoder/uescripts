@@ -1,0 +1,50 @@
+#!/bin/sh
+# author: xycoder
+# date: 2015-07-06
+ver="0.1"
+help()
+{
+ cat << HELP
+cptoue -- copy the file to every ue server
+USAGE: cptoue [-h] filename dirname
+OPTION: -h help text
+EXAMPLE: cptoue filename dirname
+This will copy the file <filename> to the directory in every ue server
+who is online
+version $ver
+HELP
+ exit 0
+}
+
+error()
+{
+ echo "$1"
+ exit 1
+}
+
+while [ -n "$1" ];
+do
+ case $1 in
+  -h) help;shift 1;;
+  --) break;;
+  -*) echo "error: no such option $1. -h for help";exit 1;;
+  *) break;;
+ esac
+done
+
+#input check:
+[ -f "$1" ] ||
+error "ERROR: you must specify a file, use -h for help"
+#if [ -z "$2" ]; then
+# error "ERROR: you must specify a directory, use -h for help"
+#fi
+
+file_name=$1
+dir_name=$2
+for i in `awk '{print $1}' ue_service_ip`
+do
+ Istat=`awk -v I="$i" '{if(I==$1)print $3}' ue_service_ip`
+ if [ $Istat == 1 ]; then
+  scp $file_name root@$i:$dir_name
+ fi
+done

@@ -1,0 +1,10 @@
+cc_mask=28
+aagc_adjust=1
+bb_gain=0
+rf_gain=7
+IRC_MMSE=1
+channel_type=0
+dmrs_interp=1
+ui_flag=1
+ui_ip_dst=192.168.73.191
+ui_ip_loc=192.168.73.38

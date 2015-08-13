@@ -1,0 +1,4 @@
+#!/bin/sh
+ping -t 60 192.168.73.255
+arp -a > tmplog
+
