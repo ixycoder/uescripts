@@ -33,8 +33,8 @@ do
 done
 
 #input check:
-[ -f "$1" ] ||
-error "ERROR: you must specify a file, use -h for help"
+#[ -f "$1" ] ||
+#error "ERROR: you must specify a file, use -h for help"
 #if [ -z "$2" ]; then
 # error "ERROR: you must specify a directory, use -h for help"
 #fi
@@ -45,6 +45,6 @@ for i in `awk '{print $1}' ue_service_ip`
 do
  Istat=`awk -v I="$i" '{if(I==$1)print $3}' ue_service_ip`
  if [ $Istat == 1 ]; then
-  scp $file_name root@$i:$dir_name
+  scp -r $file_name root@$i:$dir_name
  fi
 done

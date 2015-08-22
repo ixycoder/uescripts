@@ -1,5 +1,0 @@
-#!/usr/bin/expect -f
-set test_ip [lindex $argv 0]
-set timeoout 10
-spawn ping $test_ip
-expect "*ms*"
