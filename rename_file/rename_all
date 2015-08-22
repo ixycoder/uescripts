@@ -1,0 +1,19 @@
+#!/bin/sh
+for inum in `awk '{print $1}' ue_service_ip`
+do
+	getip=${inum##*.}	
+	ueid[$getip]=`awk -v I="$inum" '{if(I==$1)print $2}' ue_service_ip`
+done
+cd $1
+for i in `ls *.log`
+do
+	#dista=`echo $i | awk -F "ip" '{print $2}'` 
+	#echo $dista
+	dista=${i#*ip}
+	ueip=${dista%%_*}
+	targe=${dista/${ueip}/${ueid[$ueip]}}
+	#echo $dista
+	#echo $targe
+	echo "$i => $targe"
+	mv $i $targe
+done

@@ -1,0 +1,17 @@
+#!/bin/sh
+function ergod()
+{
+	for i in `ls $1`
+	do
+		if [ -d $1"/"$i ] 
+		then
+			ergod $1"/"$i
+		else
+			#echo "$1/$i"
+			./rename_all "$1"
+			break
+		fi
+	done
+}
+
+ergod $1

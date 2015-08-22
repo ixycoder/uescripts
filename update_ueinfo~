@@ -1,15 +1,15 @@
 #!/bin/sh
 # author: xycoder
 # date: 2015-07-06
-ver="0.2"
+ver="0.1"
 help()
 {
  cat << HELP
-update_ueinfo -- update the ue config for all servers
+update_ueinfo -- update the ue id for all servers
 USAGE: update_ueinfo [-h] filename
 OPTION: -h help text
-EXAMPLE: update_ueinfo [run_ue.sh] [ue_initial.txt]
-This will update the run_ue.sh or ue_initial.txt in every servers
+EXAMPLE: update_ueinfo run_ue.sh
+This will update the run_ue.sh in every servers
 version $ver
 HELP
  exit 0

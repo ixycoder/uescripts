@@ -1,0 +1,34 @@
+#!/bin/sh
+function newname()
+{
+	dista=${2##*ip}
+	ueip=${dista%%_*}
+	targe=${dista/${ueip}/${ueid[$ueip]}}
+	echo "$2 => $targe"
+	mv $1"/"$2 $1"/"$targe
+}
+function ergod()
+{
+	for i in `ls $1`
+	do
+		if [ -d $1"/"$i ] 
+		then
+			ergod $1"/"$i
+		else
+			#echo "$1/$i"
+			if [ ${i##*ip*.} = "log" ]
+			then
+				newname $1 $i
+			fi
+			#break
+		fi
+	done
+}
+for inum in `awk '{print $1}' ue_service_ip`
+do
+	getip=${inum##*.}
+	ueid[$getip]=`awk -v I="$inum" '{if(I==$1)print $2}' ue_service_ip`
+done
+
+
+ergod $1
